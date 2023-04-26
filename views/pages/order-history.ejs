@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head') %>
+
+	<body>
+		<!-- header -->
+		<%- include('../partials/header') %>
+
+		<!-- main -->
+		<main>
+			<div class="container mt-5">
+
+				<h5 class="mt-5">BTC/USDT orders</h5>
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">Order Time</th>
+							<th scope="col">Order Id</th>
+							<th scope="col">Pair</th>
+							<th scope="col">Type</th>
+							<th scope="col">Side</th>
+							<th scope="col">Average</th>
+							<th scope="col">Price</th>
+							<th scope="col">Executed</th>
+							<th scope="col">Amount</th>
+							<th scope="col">Total</th>
+							<th scope="col">Trigger Condition</th>
+							<th scope="col">All</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% orders.forEach((order, index) => { %>
+						<tr>
+							<td><%=order.time%></td>
+							<td><%=order.orderId%></td>
+							<td><%=order.symbol%></td>
+							<td><%=order.type%></td>
+							<td><%=order.side%></td>
+							<td>?</td>
+							<td><%=order.price%></td>
+							<td><%=order.executedQty%></td>
+							<td><%=order.origQty%></td>
+							<td>?</td>
+							<td>?</td>
+							<td>?</td>
+						</tr>
+						<% }) %>
+					</tbody>
+				</table>
+
+			</div>
+		</main>
+
+		<!-- footer -->
+		<%- include('../partials/footer'); %>
+	</body>
+
+</html>

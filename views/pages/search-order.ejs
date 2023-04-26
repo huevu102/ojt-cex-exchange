@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head') %>
+
+	<body>
+		<!-- header -->
+		<%- include('../partials/header') %>
+
+		<!-- main -->
+		<main>
+			<div class="container mt-5">
+
+				<!-- open history -->
+				<h3>ORDER HISTORY</h3>
+				
+				<h5 class="mt-5 mb-3">Search Order</h5>
+				<form class="row form-inline my-2 my-lg-0" action="/search-order" method="POST">
+					<!-- <input class="form-control mr-sm-2 col" type="search" placeholder="Input Trading Pair" name="searchTradingPair" required> -->
+					<input class="form-control mr-sm-2 col" type="search" placeholder="Input Order Id" name="searchOrderId" required>
+					<div class="col">
+						<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+					</div>
+				</form>
+
+				<table class="table mt-3">
+					<thead>
+						<tr>
+							<th scope="col">Order Time</th>
+							<th scope="col">Pair</th>
+							<th scope="col">Type</th>
+							<th scope="col">Side</th>
+							<th scope="col">Average</th>
+							<th scope="col">Price</th>
+							<th scope="col">Executed</th>
+							<th scope="col">Amount</th>
+							<th scope="col">Total</th>
+							<th scope="col">Trigger Condition</th>
+							<th scope="col">All</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><%=order.time%></td>
+							<td><%=order.symbol%></td>
+							<td><%=order.type%></td>
+							<td><%=order.side%></td>
+							<td>?</td>
+							<td><%=order.price%></td>
+							<td><%=order.executedQty%></td>
+							<td><%=order.origQty%></td>
+							<td>?</td>
+							<td>?</td>
+							<td>?</td>
+						</tr>
+					</tbody>
+				</table>
+				
+			</div>
+		</main>
+
+		<!-- footer -->
+		<%- include('../partials/footer'); %>
+	</body>
+
+</html>

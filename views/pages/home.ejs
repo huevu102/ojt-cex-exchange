@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head') %>
+
+	<body>
+		<!-- header -->
+		<%- include('../partials/header') %>
+
+		<!-- main -->
+		<main>
+			<div class="container">
+
+				<!-- order book -->
+				<div class="row mt-5">
+					<h3>ORDER BOOK </h3>
+					<p>BTC/USDT</p><br>
+
+					<div class="col-6">
+						<h5>Buy Order</h5>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">Price (USDT)</th>
+									<th scope="col">Amount (BTC)</th>
+									<th scope="col">Total</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% bids.forEach((bid, index) => { %>
+								<tr>
+									<td scope="row" style="color: lightseagreen;">Buy <%=index+1%></th>
+									<td><%=bid[0]%></td>
+									<td><%=bid[1]%></td>
+									<td></td>
+								</tr>
+								<% });%>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="col-6">
+						<h5>Sell Order</h5>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">Price (USDT)</th>
+									<th scope="col">Amount (BTC)</th>
+									<th scope="col">Total</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% asks.forEach((ask, index)=> { %>
+								<tr>
+									<td scope="row" style="color: palevioletred;">Sell <%=index+1%></th>
+									<td><%=ask[0]%></td>
+									<td><%=ask[1]%></td>
+									<td></td>
+								</tr>
+								<% });%>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<!-- limit order -->
+				<div class="mt-5">
+					<h3>LIMIT ORDER</h3>
+
+					<form class="form-inline" action="/" method="POST">
+						<div class="row">
+							<div class="col-4">
+								<div class="form-group">
+									<input type="text" class="form-control" id="limitTradingPair" name="limitTradingPair" placeholder="Input trading pair" required>
+								</div>
+							</div>
+							<div class="col-8">
+								<button type="submit" class="btn btn-primary mb-2">Place order</button>
+							</div>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</main>
+
+		<!-- footer -->
+		<%- include('../partials/footer'); %>
+	</body>
+
+</html>

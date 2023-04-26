@@ -7,6 +7,8 @@ const router = express.Router();
 module.exports = (app) => {
 	//get home page
 	router.get('/', WebController.renderOrderBook);
+	// search order book
+	router.post('/', WebController.handleSearchOrderBook);
 
 	//place limit order
 	router.post('/', WebController.handlePlaceLimitOrder);
@@ -16,8 +18,11 @@ module.exports = (app) => {
 
 	// get open orders
 	router.get('/open-orders', WebController.renderOpenOrders);
+
 	// get order history
 	router.get('/order-history', WebController.renderOrderHistory);
+	// search order history
+	router.post('/order-history', WebController.handleSearchOrderHistory);
 
 	// get search order
 	router.get('/search-order', WebController.renderSearchOrder);

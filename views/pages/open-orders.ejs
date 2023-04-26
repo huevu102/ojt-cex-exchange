@@ -8,11 +8,11 @@
 
 		<!-- main -->
 		<main>
-			<div class="container mt-5">
+			<div class="p-5">
 
 				<!-- open orders -->
 				<h3>OPEN ORDERS</h3>
-				<table class="table">
+				<table class="table table-striped">
 					<thead>
 						<tr>
 							<th scope="col">Date</th>
@@ -30,8 +30,8 @@
 					<tbody>
 						<% orders.forEach((order, index) => { %>
 						<tr>
-							<td><%=order.time%></td>
-							<td><%=order.symbol%></td>
+							<td><%=new Date(order.time).toDateString()%></td>
+							<td><%=coin1%>/<%=coin2%></td>
 							<td><%=order.type%></td>
 							<td><%=order.side%></td>
 							<td><%=order.price%></td>

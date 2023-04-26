@@ -8,14 +8,27 @@
 
 		<!-- main -->
 		<main>
-			<div class="container mt-5">
+			<div class="p-5">
+				<!-- <h5 style="color: blue;"><%=coin1%>/<%=coin2%> orders</h5> -->
+				<form class="form-inline" action="/order-history" method="POST">
+					<div class="row">
+						<div class="form-group col-2">
+							<input type="text" class="form-control" id="historyCoin1" name="historyCoin1" placeholder="Input coin 1" required>
+						</div>
+						<div class="form-group col-2">
+							<input type="text" class="form-control" id="historyCoin2" name="historyCoin2" placeholder="Input coin 2" required>
+						</div>
+						<div class="col">
+							<button type="submit" class="btn btn-primary mb-2">Search</button>
+						</div>
+					</div>
+				</form>
 
-				<h5 class="mt-5">BTC/USDT orders</h5>
-				<table class="table">
+				<table class="table table-striped">
 					<thead>
 						<tr>
-							<th scope="col">Order Time</th>
 							<th scope="col">Order Id</th>
+							<th scope="col">Order Time</th>
 							<th scope="col">Pair</th>
 							<th scope="col">Type</th>
 							<th scope="col">Side</th>
@@ -31,9 +44,9 @@
 					<tbody>
 						<% orders.forEach((order, index) => { %>
 						<tr>
-							<td><%=order.time%></td>
 							<td><%=order.orderId%></td>
-							<td><%=order.symbol%></td>
+							<td><%=new Date(order.time).toDateString()%></td>
+							<td><%=coin1%>/<%=coin2%></td>
 							<td><%=order.type%></td>
 							<td><%=order.side%></td>
 							<td>?</td>

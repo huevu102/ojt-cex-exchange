@@ -8,8 +8,34 @@
 
 		<!-- main -->
 		<main>
-			<div class="container mt-5">
-				<p>SPOT ASSETS</p>
+			<div class="p-5">
+
+				<h3>SPOT ASSETS</h3>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Coin</th>
+							<th scope="col">Total</th>
+							<th scope="col">Available</th>
+							<th scope="col">In Order</th>
+							<th scope="col">BTC Value</th>
+							<th scope="col">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% spotAssets.forEach((asset, index) => { %>
+						<tr>
+							<td><%=asset.baseAsset%></td>
+							<td>?</td>
+							<td><%=asset.isSpotTradingAllowed%></td>
+							<td><%=asset.orderType%></td>
+							<td>?</td>
+							<td>?</td>
+						</tr>
+						<% }) %>
+					</tbody>
+				</table>
+
 			</div>
 		</main>
 

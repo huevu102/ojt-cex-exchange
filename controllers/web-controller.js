@@ -2,6 +2,7 @@ const axios = require('axios');
 const crypto = require('crypto');
 const { response } = require('express');
 const qs = require('qs');
+const alert = require('alert');
 require('dotenv').config();
 
 
@@ -16,7 +17,9 @@ module.exports = {
   renderOrderBook: async (req, res, next) => {
     const endpoint = '/depth';
     // order book details
-    const symbol = 'BTCUSDT'; // trading pair
+    const coin1 = 'BTC';
+    const coin2 = 'USDT';
+    const symbol = coin1+coin2; // trading pair
     const limit = '10'; // number of orders
 
     const params = qs.stringify({
@@ -28,12 +31,52 @@ module.exports = {
 
     axios.get(url)
       .then(response => {
-        // console.log(response.data);
+        const orders = response.data;
+        // console.log(orders);
         res.render('pages/home', 
           { 
-            lastUpdateId: response.data.lastUpdateId,
-            bids: response.data.bids,
-            asks: response.data.asks
+            // lastUpdateId: orders.lastUpdateId,
+            coin1: coin1,
+            coin2: coin2,
+            bids: orders.bids,
+            asks: orders.asks,
+            message: `${symbol}`
+          })
+      })
+      .catch(error => {
+        console.error(error);
+      }); 
+  },
+
+
+  // search order book
+  handleSearchOrderBook: async (req, res, next) => {
+    const endpoint = '/depth';
+    // order book details
+    const coin1 = req.body.coin1.toUpperCase();
+    const coin2 = req.body.coin2.toUpperCase();
+    const symbol = coin1+coin2; // trading pair
+    const limit = '10'; // number of orders
+
+    const params = qs.stringify({
+      symbol,
+      limit
+    });
+
+    const url = `${baseUrl}${endpoint}?${params}`;
+
+    axios.get(url)
+      .then(response => {
+        const orders = response.data;
+        // console.log(orders);
+        res.render('pages/home', 
+          { 
+            // lastUpdateId: orders.lastUpdateId,
+            coin1: coin1,
+            coin2: coin2,
+            bids: orders.bids,
+            asks: orders.asks,
+            message: `${symbol}`
           })
       })
       .catch(error => {
@@ -47,8 +90,9 @@ module.exports = {
     const endpoint = '/order';
     
     // Order details
-    const symbol = req.body.limitTradingPair; //     -> only work when trading pair = BTCUSDT???
-    const side = 'BUY'; // buy or sell
+    const symbol = req.body.limitTradingPair.toUpperCase(); //     -> only work when trading pair = BTCUSDT???
+    const side = req.body.limitOderSide; // buy or sell
+
     const quantity = 0.001; // amount to buy
     const price = 40000; // price per unit
 
@@ -79,7 +123,9 @@ module.exports = {
     })
       .then(response => {
         const newOrder = response.data;
-        console.log(newOrder);
+        // console.log(newOrder);
+        alert(`Limit ${newOrder.side} ${newOrder.symbol} order created.`);
+        res.redirect('/')
       })
       .catch(error => {
         console.error(error);
@@ -114,7 +160,7 @@ module.exports = {
       }
     })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         res.redirect('/open-orders');
       })
       .catch(error => {
@@ -163,7 +209,9 @@ module.exports = {
   // get order history
   renderOrderHistory: async (req, res, next) => {
     const endpoint = '/allOrders';
-    const symbol = 'BTCUSDT';
+    const coin1 = 'BTC';
+    const coin2 = 'USDT';
+    const symbol = coin1+coin2;
     const timestamp = Date.now();
 
     const params = qs.stringify({
@@ -189,6 +237,53 @@ module.exports = {
         // console.log(allOrders);
         res.render('pages/order-history', 
           { 
+            coin1: coin1,
+            coin2: coin2,
+            orders: allOrders
+          })
+      })
+      .catch(error => {
+        console.error(error);
+      });   
+  },
+
+
+  // search order history
+  handleSearchOrderHistory: async (req, res, next) => {
+    const endpoint = '/allOrders';
+    const coin1 = req.body.historyCoin1.toUpperCase();
+    const coin2 = req.body.historyCoin2.toUpperCase();
+    const symbol = coin1+coin2;
+    const timestamp = Date.now();
+
+    const params = qs.stringify({
+      symbol,
+      recvWindow: 60000,
+      timestamp,
+      
+    })
+    
+    const signature = crypto.createHmac('sha256', process.env.testnetSecretKey)
+      .update(params)
+      .digest('hex');
+
+    const url = `${testnetBaseUrl}${endpoint}?${params}&signature=${signature}`;
+
+    axios.get(url, {
+      headers: {
+        'X-MBX-APIKEY': process.env.testnetApiKey
+      }
+    })
+      .then(response => {
+        const allOrders = response.data;
+        console.log(allOrders);
+        if(allOrders.length==0) {
+          alert('There was no order of this pair!')
+        }
+        res.render('pages/order-history', 
+          { 
+            coin1: coin1,
+            coin2: coin2,
             orders: allOrders
           })
       })
@@ -210,7 +305,9 @@ module.exports = {
   // search order by orderId
   handleSearchOrder: async (req, res, next) => {
     const endpoint = '/order';
-    const symbol = 'BTCUSDT';
+    const coin1 = 'BTC';
+    const coin2 = 'USDT';
+    const symbol = coin1+coin2;
     // const symbol = req.body.searchTradingPair.toUpperCase();   -> API-key format invalid???
     const orderId = req.body.searchOrderId;
     const timestamp = Date.now();
@@ -236,6 +333,8 @@ module.exports = {
       .then(response => {
         const order = response.data;
         res.render('pages/search-order', {
+          coin1: coin1,
+          coin2: coin2,
             order: order
           })
       })
@@ -253,13 +352,9 @@ module.exports = {
     axios.get(url)
       .then(response => {
         const spotAssets = response.data;
-        
-        console.log('---------')
-        console.log(spotAssets);
-        console.log('---------')
-
+        // console.log(spotAssets);
         res.render('pages/spot-assets', {
-            data: spotAssets
+            spotAssets: spotAssets.symbols
           })
       })
       .catch(error => {

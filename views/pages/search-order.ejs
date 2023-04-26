@@ -8,7 +8,7 @@
 
 		<!-- main -->
 		<main>
-			<div class="container mt-5">
+			<div class="p-5">
 
 				<!-- open history -->
 				<h3>ORDER HISTORY</h3>
@@ -22,7 +22,7 @@
 					</div>
 				</form>
 
-				<table class="table mt-3">
+				<table class="table table-striped mt-3">
 					<thead>
 						<tr>
 							<th scope="col">Order Time</th>
@@ -40,7 +40,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><%=order.time%></td>
+							<td><%=new Date(order.time).toDateString()%></td>
 							<td><%=order.symbol%></td>
 							<td><%=order.type%></td>
 							<td><%=order.side%></td>
